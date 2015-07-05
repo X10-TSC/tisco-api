@@ -1,0 +1,8 @@
+{"dataObject":{
+    "originalData":#[flowVars.inputValue],
+    "formula":"#[flowVars.formula],
+    "newData":#[flowVars.outputValue]
+    },
+  "success":true,
+  "error":"No errors."
+}

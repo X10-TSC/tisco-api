@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mule xmlns:tracking="http://www.mulesoft.org/schema/mule/ee/tracking" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:apikit="http://www.mulesoft.org/schema/mule/apikit" xmlns:data-mapper="http://www.mulesoft.org/schema/mule/ee/data-mapper" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:scripting="http://www.mulesoft.org/schema/mule/scripting" xmlns:spring="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/apikit http://www.mulesoft.org/schema/mule/apikit/current/mule-apikit.xsd
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+http://www.mulesoft.org/schema/mule/ee/data-mapper http://www.mulesoft.org/schema/mule/ee/data-mapper/current/mule-data-mapper.xsd
+http://www.mulesoft.org/schema/mule/scripting http://www.mulesoft.org/schema/mule/scripting/current/mule-scripting.xsd
+http://www.mulesoft.org/schema/mule/ee/tracking http://www.mulesoft.org/schema/mule/ee/tracking/current/mule-tracking-ee.xsd" version="EE-3.6.1">
+    <http:listener-config name="api-httpListenerConfig" host="localhost" port="8081" doc:name="HTTP Listener Configuration" />
+    <apikit:config name="api-config" raml="api.raml" consoleEnabled="true" consolePath="console" doc:name="Router" />
+    <http:request-config name="Tisco-sqs-service" host="tisco-sqs-service.cloudhub.io" port="80" basePath="queues" doc:name="HTTP Request Configuration" />
+    <data-mapper:config name="JSON_To_Json" transformationGraphPath="json_to_json.grf" doc:name="JSON_To_Json" />
+    <http:request-config name="Tisco-search-service" host="tisco-search-service-v1.cloudhub.io" port="80" basePath="search" doc:name="HTTP Request Configuration" />
+    <http:request-config name="Tisco-formula-service" host="tisco-formula-service-v1.cloudhub.io" port="80" basePath="math" doc:name="HTTP Request Configuration" />
+    <data-mapper:config name="JSON_To_Json_1" transformationGraphPath="json_to_json_1.grf" doc:name="JSON_To_Json_1"/>
+    <http:request-config name="Tisco-mongodb-service" host="tisco-mongodb-service-v1.cloudhub.io" port="80" basePath="mongodb/customers" doc:name="HTTP Request Configuration"/>
+    <flow name="api-main">
+        <http:listener config-ref="api-httpListenerConfig" path="/api/*" doc:name="HTTP" />
+        <apikit:router config-ref="api-config" doc:name="APIkit Router" />
+        <exception-strategy ref="api-apiKitGlobalExceptionMapping" doc:name="Reference Exception Strategy" />
+    </flow>
+        <flow name="get:/search:api-config">
+        <http:request config-ref="Tisco-search-service" path="/" method="GET" doc:name="Call Tisco Search Service">
+            <http:request-builder>
+                <http:query-param paramName="keyword" value="#[message.inboundProperties.'http.query.params'.searchObj]" />
+            </http:request-builder>
+        </http:request>
+        <object-to-string-transformer doc:name="Convert resultset to String" />
+        <set-payload value="{&quot;searchResultObject&quot;:#[payload],&quot;success&quot;:true,&quot;error&quot;:&quot;No errors.&quot;}" doc:name="Set Payload" />
+    </flow>
+    <flow name="get:/query:api-config">
+        <http:request config-ref="Tisco-mongodb-service" path="/get" method="GET" doc:name="Query object with custIC parameter from MongoDB">
+            <http:request-builder>
+                <http:query-param paramName="ic" value="#[message.inboundProperties.'http.query.params'.searchObj]"/>
+            </http:request-builder>
+        </http:request>
+        <object-to-string-transformer doc:name="Object to String"/>
+        <set-payload value="{&quot;searchResultObject&quot;:#[payload],&quot;success&quot;:true,&quot;error&quot;:&quot;No errors.&quot;}" doc:name="Set Payload"/>
+    </flow>
+        <flow name="post:/update:application/json:api-config">
+        <set-variable variableName="ic" value="#[json:dataId]" doc:name="Set IC Number"/>
+        <set-variable variableName="document" value="#[json:dataObject]" doc:name="Set Document"/>
+        <http:request config-ref="Tisco-mongodb-service" path="update" method="GET" doc:name="Update MongoDB by custIc">
+            <http:request-builder>
+                <http:query-param paramName="ic" value="#[flowVars.ic]"/>
+                <http:query-param paramName="document" value="#[flowVars.document]"/>
+            </http:request-builder>
+        </http:request>
+        <object-to-string-transformer doc:name="Object to String"/>
+        <choice doc:name="Choice">
+            <when expression="#[payload != &quot;Success&quot;]">
+                <set-payload value="{&quot;recordId&quot;:&quot;Not Available&quot;,&quot;success&quot;:false,&quot;error&quot;:#[payload]}" doc:name="Set Failed Payload"/>
+            </when>
+            <otherwise>
+                <set-payload value="{&quot;recordId&quot;:&quot;#[flowVars.custIc]&quot;,&quot;success&quot;:true,&quot;error&quot;:&quot;No errors.&quot;}" doc:name="Set Success Payload"/>
+            </otherwise>
+        </choice>
+    </flow>
+    <flow name="get:/queue/list:api-config">
+        <logger message="#[payload]" level="INFO" doc:name="Logger" />
+        <http:request config-ref="Tisco-sqs-service" path="/list" method="GET" doc:name="Call Tisco-Queue Service" />
+        <data-mapper:transform config-ref="JSON_To_Json" doc:name="JSON To Json" />
+    </flow>
+    <flow name="post:/formula/calculate:api-config">
+        <set-variable variableName="inputValue" value="#[message.inboundProperties.'http.query.params'.data]" doc:name="Set inputValue variable" />
+        <set-variable variableName="formula" value="#[message.inboundProperties.'http.query.params'.formulaId]" doc:name="Set formula selection" />
+        <http:request config-ref="Tisco-formula-service" path="/" method="GET" doc:name="Call math formula service">
+            <http:request-builder>
+                <http:query-param paramName="formula" value="#[flowVars.formula]" />
+                <http:query-param paramName="number" value="#[flowVars.inputValue]" />
+            </http:request-builder>
+        </http:request>
+        <object-to-string-transformer doc:name="Object to String" />
+        <set-variable variableName="outputValue" value="#[payload]" doc:name="Set calculation result" />
+        <parse-template location="formula-result.template" doc:name="Parse Template" />
+    </flow>
+    <flow name="post:/queue/push:api-config">
+    	<http:request config-ref="Tisco-sqs-service" path="/put" method="GET" doc:name="Put message into Tisco sqs service" >
+        	<http:request-builder>
+                <http:query-param paramName="clearMessage" value="#[message.inboundProperties.'http.query.params'.clearText]"/>
+        	</http:request-builder>
+        </http:request>
+        <data-mapper:transform config-ref="JSON_To_Json_1" doc:name="JSON To Json"/>
+    </flow>
+    <apikit:mapping-exception-strategy name="api-apiKitGlobalExceptionMapping">
+        <apikit:mapping statusCode="404">
+            <apikit:exception value="org.mule.module.apikit.exception.NotFoundException" />
+            <set-property propertyName="Content-Type" value="application/json" doc:name="Property" />
+            <set-payload value="{ &quot;message&quot;: &quot;Resource not found&quot; }" doc:name="Set Payload" />
+        </apikit:mapping>
+        <apikit:mapping statusCode="405">
+            <apikit:exception value="org.mule.module.apikit.exception.MethodNotAllowedException" />
+            <set-property propertyName="Content-Type" value="application/json" doc:name="Property" />
+            <set-payload value="{ &quot;message&quot;: &quot;Method not allowed&quot; }" doc:name="Set Payload" />
+        </apikit:mapping>
+        <apikit:mapping statusCode="415">
+            <apikit:exception value="org.mule.module.apikit.exception.UnsupportedMediaTypeException" />
+            <set-property propertyName="Content-Type" value="application/json" doc:name="Property" />
+            <set-payload value="{ &quot;message&quot;: &quot;Unsupported media type&quot; }" doc:name="Set Payload" />
+        </apikit:mapping>
+        <apikit:mapping statusCode="406">
+            <apikit:exception value="org.mule.module.apikit.exception.NotAcceptableException" />
+            <set-property propertyName="Content-Type" value="application/json" doc:name="Property" />
+            <set-payload value="{ &quot;message&quot;: &quot;Not acceptable&quot; }" doc:name="Set Payload" />
+        </apikit:mapping>
+        <apikit:mapping statusCode="400">
+            <apikit:exception value="org.mule.module.apikit.exception.BadRequestException" />
+            <set-property propertyName="Content-Type" value="application/json" doc:name="Property" />
+            <set-payload value="{ &quot;message&quot;: &quot;Bad request&quot; }" doc:name="Set Payload" />
+        </apikit:mapping>
+    </apikit:mapping-exception-strategy>
+</mule>

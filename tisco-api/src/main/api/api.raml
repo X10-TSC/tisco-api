@@ -1,0 +1,323 @@
+#%RAML 0.8
+title: Tisco-API
+version: 1
+/update:
+  description: To add a new object into an object store
+  post:
+    body:     
+      application/json:
+        schema: |
+          {
+            "$schema": "http://json-schema.org/draft-04/schema#",
+            "id": "http://jsonschema.net",
+            "type": "object",
+            "properties": {
+              "dataId": {
+                "id": "http://jsonschema.net/dataId",
+                "type": "string"
+              },
+              "dataObject": {
+                "id": "http://jsonschema.net/dataObject",
+                "type": "object"
+              }
+            },
+            "required": [
+              "dataId",
+              "dataObject"
+            ]
+          }
+        example: |
+          {
+            "dataId" : "1234567890",
+            "dataObejct" : "This is a dataset"
+          }
+    responses:
+      200:
+        body:
+          application/json:
+            example: |
+              {
+                "recordId" : "1234567890",
+                "success": true,
+                "error": "Error string if any"
+              }
+            schema: |
+              {
+                "$schema": "http://json-schema.org/draft-04/schema#",
+                "id": "http://jsonschema.net",
+                "type": "object",
+                "properties": {
+                  "recordId": {
+                    "id": "http://jsonschema.net/recordId",
+                    "type": "string"
+                  },
+                  "success": {
+                    "id": "http://jsonschema.net/success",
+                    "type": "boolean"
+                  },
+                  "error": {
+                    "id": "http://jsonschema.net/error",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "recordId",
+                  "success",
+                  "error"
+                ]
+              }
+/search:
+  description: To perform a search from an external search engine
+  get:
+    queryParameters:
+      objectType:
+        type: number
+        required: true
+        default: 0
+      searchObj:
+        type: string
+        required: true
+    responses:
+      200:
+        body:
+          application/json:
+            example: |
+              {
+                "searchResultObject" : "This is the search object",
+                "success": true,
+                "error" : "Error message if any"
+              }
+            schema: |
+              {
+                "$schema": "http://json-schema.org/draft-04/schema#",
+                "id": "http://jsonschema.net",
+                "type": "object",
+                "properties": {
+                  "searchResultObject": {
+                    "id": "http://jsonschema.net/searchResultObject",
+                    "type": "string"
+                  },
+                  "success": {
+                    "id": "http://jsonschema.net/success",
+                    "type": "boolean"
+                  },
+                  "error": {
+                    "id": "http://jsonschema.net/error",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "searchResultObject",
+                  "success",
+                  "error"
+                ]
+              }
+/query:
+  description: To search for an object in memcached
+  get:
+    queryParameters:
+      objectType:
+        type: number
+        required: true
+        default: 0
+      searchObj:
+        type: string
+        required: true
+    responses:
+      200:
+        body:
+          application/json:
+            example: |
+              {
+                "searchResultObject" : "This is the search object",
+                "success": true,
+                "error" : "Error message if any"
+              }
+            schema: |
+              {
+                "$schema": "http://json-schema.org/draft-04/schema#",
+                "id": "http://jsonschema.net",
+                "type": "object",
+                "properties": {
+                  "searchResultObject": {
+                    "id": "http://jsonschema.net/searchResultObject",
+                    "type": "string"
+                  },
+                  "success": {
+                    "id": "http://jsonschema.net/success",
+                    "type": "boolean"
+                  },
+                  "error": {
+                    "id": "http://jsonschema.net/error",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "searchResultObject",
+                  "success",
+                  "error"
+                ]
+              }
+/queue:
+  /push:
+    description: Push data into the queue
+    post:
+      queryParameters:
+        clearText:
+          type: string
+          required: true
+          example: "Clear text message to be encrypted"
+      responses:
+        200:
+          body:
+            application/json:
+              example: |
+                {
+                  "correlationId":"1234567890",
+                  "success":true,
+                  "error":"Error message if available."
+                }
+              schema: |
+                {
+                  "$schema": "http://json-schema.org/draft-04/schema#",
+                  "id": "http://jsonschema.net",
+                  "type": "object",
+                  "properties": {
+                    "correlationId": {
+                      "id": "http://jsonschema.net/correlationId",
+                      "type": "string"
+                    },
+                    "success": {
+                      "id": "http://jsonschema.net/success",
+                      "type": "boolean"
+                    },
+                    "error": {
+                      "id": "http://jsonschema.net/error",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "correlationId",
+                    "success",
+                    "error"
+                  ]
+                }
+  /list:
+    description: List all data in the queue
+    get:
+      responses:
+        200:
+          body:
+            application/json:
+              example: |
+                {
+                  "queueUrls" : [ "https://sqs.ap-southeast-1.amazonaws.com/567617630570/mule-queue", "https://sqs.ap-southeast-1.amazonaws.com/567617630570/tisco-poc" ],
+                  "success":true,
+                  "error":"Error message if available."
+                }
+              schema: |
+                {
+                  "$schema": "http://json-schema.org/draft-04/schema#",
+                  "id": "http://jsonschema.net",
+                  "type": "object",
+                  "properties": {
+                    "queueUrls": {
+                      "id": "http://jsonschema.net/queueUrls",
+                      "type": "array",
+                      "items": [
+                        {
+                          "id": "http://jsonschema.net/queueUrls/0",
+                          "type": "string"
+                        },
+                        {
+                          "id": "http://jsonschema.net/queueUrls/1",
+                          "type": "string"
+                        }
+                      ],
+                      "required": [
+                        "0",
+                        "1"
+                      ]
+                    },
+                    "success": {
+                      "id": "http://jsonschema.net/success",
+                      "type": "boolean"
+                    },
+                    "error": {
+                      "id": "http://jsonschema.net/error",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "queueUrls",
+                    "success",
+                    "error"
+                  ]
+                }
+/formula/calculate:
+  description: calculate square or root of a number
+  post:
+    queryParameters:
+      formulaId:
+        type: string
+        example: square
+      data:
+        type: number
+    responses:
+      200:
+        body:
+          application/json:
+            example: |
+              {
+                "dataObject":{
+                  "originalData":10,
+                  "formula":"square",
+                  "newData":100
+                  },
+                "success":true,
+                "error":"Error Message if available"
+              }
+            schema: |
+              {
+                "$schema": "http://json-schema.org/draft-04/schema#",
+                "id": "http://jsonschema.net",
+                "type": "object",
+                "properties": {
+                  "dataObject": {
+                    "id": "http://jsonschema.net/dataObject",
+                    "type": "object",
+                    "properties": {
+                      "originalData": {
+                        "id": "http://jsonschema.net/dataObject/originalData",
+                        "type": "integer"
+                      },
+                      "formula": {
+                        "id": "http://jsonschema.net/dataObject/formula",
+                        "type": "string"
+                      },
+                      "newData": {
+                        "id": "http://jsonschema.net/dataObject/newData",
+                        "type": "integer"
+                      }
+                    },
+                    "required": [
+                      "originalData",
+                      "formula",
+                      "newData"
+                    ]
+                  },
+                  "success": {
+                    "id": "http://jsonschema.net/success",
+                    "type": "boolean"
+                  },
+                  "error": {
+                    "id": "http://jsonschema.net/error",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "dataObject",
+                  "success",
+                  "error"
+                ]
+              }

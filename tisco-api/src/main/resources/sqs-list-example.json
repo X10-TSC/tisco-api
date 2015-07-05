@@ -1,0 +1,6 @@
+{
+  "queueUrls": [
+    "https://sqs.ap-southeast-1.amazonaws.com/567617630570/mule-queue",
+    "https://sqs.ap-southeast-1.amazonaws.com/567617630570/tisco-poc"
+  ]
+}

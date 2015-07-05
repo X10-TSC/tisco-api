@@ -1,0 +1,24 @@
+[
+  {
+    "_id": {
+      "$oid": "5596b344980fbe6737f0bc02"
+    },
+    "Identity": {
+      "custIC": "5290362409063",
+      "firstName": "Kenneth",
+      "lastName": "Ng",
+      "birthDate": "19700212",
+      "gender": "male",
+      "nationalityCode": "my"
+    },
+    "Contact": {
+      "addressType": "home",
+      "houseNo": "123",
+      "residenceName": "MiCasa",
+      "road": "Orchard Road",
+      "district": "CBD",
+      "zipcode": "238877",
+      "countryCode": "SG"
+    }
+  }
+]

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?><Graph __version="3.5.0" author="msps" created="Fri Jul 03 02:48:19 EDT 2015" description="JSON To Json" guiVersion="3.4.4.P" id="1435910596884" licenseCode="Unlicensed" licenseType="Unknown" modified="Fri Jul 03 02:48:19 EDT 2015" modifiedBy="msps" name="JSON_To_Json" preview-file="${Project_Home}/src/main/resources/sqs-list-example.json" revision="1.0" showComponentDetails="false">
+<Global>
+<Metadata __index="0" __referenceCounter="1" __sourcePath="{}/object" _dataStructure="OBJECT" _id="__id" _type="Input" id="73dd6533-7099-4c03-8e34-8125434be675">
+<Record fieldDelimiter="," name="object" recordDelimiter="\n\\|\r\n\\|\r" type="delimited">
+<Field __artificialType="_id" __systemManaged="true" name="__id" type="string"/>
+<Field __index="0" __sourcePath="{}/object/queueUrls" containerType="list" label="queueUrls" name="queueUrls" type="string"/>
+</Record>
+</Metadata>
+<Metadata __index="0" __referenceCounter="1" __sourcePath="{}/object" _dataStructure="OBJECT" _id="__id" _type="Output" id="1ff5c3ad-7dbc-4bbd-b83e-c6573343bb38">
+<Record fieldDelimiter="," name="object" recordDelimiter="\n\\|\r\n\\|\r" type="delimited">
+<Field __artificialType="_id" __systemManaged="true" name="__id" type="string"/>
+<Field __implementationClass="java.lang.String" __index="0" __sourcePath="{}/object/error" containerType="SINGLE" label="error" name="error" type="string"/>
+<Field __index="1" __sourcePath="{}/object/queueUrls" containerType="list" label="queueUrls" name="queueUrls" type="string"/>
+<Field __implementationClass="java.lang.Boolean" __index="2" __sourcePath="{}/object/success" containerType="SINGLE" label="success" name="success" type="boolean"/>
+</Record>
+</Metadata>
+<Dictionary>
+<Entry id="DictionaryEntry0" input="true" name="inputPayload" output="false" type="object"/>
+<Entry id="DictionaryEntry1" input="false" name="outputPayload" output="true" type="object"/>
+</Dictionary>
+</Global>
+<Phase number="0">
+<Node enabled="enabled" guiName="Foreach 'object' -&gt; 'object'" guiX="460" guiY="20" id="FOREACH_OBJECT_OBJECT" transformClass="com.mulesoft.datamapper.transform.MelRecordTransform" type="REFORMAT">
+<attr name="melScript"><![CDATA[//MEL
+//START -> DO NOT REMOVE
+output.__id = input.__id;
+//END -> DO NOT REMOVE
+output.queueUrls = input.queueUrls;
+output.error = 'No error message';
+output.success = true;]]></attr>
+</Node>
+<Node charset="UTF-8" enabled="enabled" fileURL="dict:inputPayload" guiName="JSON READER" guiX="20" guiY="20" id="JSON_READER0" type="JSON_READER">
+<attr name="mapping"><![CDATA[<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Context xpath="/root">
+  <Context outPort="0" sequenceField="__id" xpath="object">
+    <Mapping cloverField="queueUrls" trim="true" xpath="queueUrls"/>
+  </Context>
+</Context>
+]]></attr>
+<attr name="__isJsonSchema"><![CDATA[false]]></attr>
+<attr name="_data_format"><![CDATA[JSON]]></attr>
+<attr name="jsonSchemaURL"><![CDATA[./src/main/resources/sqs-list-example.json]]></attr>
+</Node>
+<Node charset="UTF-8" enabled="enabled" fileURL="dict:outputPayload" guiName="JSON WRITER" guiX="900" guiY="20" id="JSON_WRITER0" type="JSON_WRITER">
+<attr name="mapping"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
+<object xmlns:clover="http://www.cloveretl.com/ns/xmlmapping" clover:inPort="0">
+  <error>$0.error</error>
+  <clover:collection clover:name="queueUrls">$0.queueUrls</clover:collection>
+  <success>$0.success</success>
+</object>]]></attr>
+<attr name="_data_format"><![CDATA[JSON]]></attr>
+<attr name="__metadata"><![CDATA[true]]></attr>
+</Node>
+<Edge debugMode="true" fromNode="FOREACH_OBJECT_OBJECT:0" guiBendpoints="" id="Edge1" inPort="Port 0 (in)" metadata="1ff5c3ad-7dbc-4bbd-b83e-c6573343bb38" outPort="Port 0 (out)" toNode="JSON_WRITER0:0"/>
+<Edge debugMode="true" fromNode="JSON_READER0:0" guiBendpoints="" id="Edge0" inPort="Port 0 (in)" metadata="73dd6533-7099-4c03-8e34-8125434be675" outPort="Port 0 (out)" toNode="FOREACH_OBJECT_OBJECT:0"/>
+</Phase>
+</Graph>

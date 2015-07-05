@@ -1,0 +1,126 @@
+{
+    "DefinitionSource": "",
+    "Heading": "Apple",
+    "ImageWidth": 220,
+    "RelatedTopics": [
+        {
+            "Result": "<a href=\"https://duckduckgo.com/Apple_chips\">Apple chips</a> - Apple chips are chips or crisps that are prepared using apple. Apple chips may be fried, deep fried, vacuum fried, dehydrated or baked. Apple chips may have a dense and crispy texture, or may be puffed, yet still crispy.",
+            "Icon": {
+                "URL": "",
+                "Height": "",
+                "Width": ""
+            },
+            "FirstURL": "https://duckduckgo.com/Apple_chips",
+            "Text": "Apple chips - Apple chips are chips or crisps that are prepared using apple. Apple chips may be fried, deep fried, vacuum fried, dehydrated or baked. Apple chips may have a dense and crispy texture, or may be puffed, yet still crispy."
+        },
+        {
+            "Result": "<a href=\"https://duckduckgo.com/Applecrab\">Applecrab</a>, apple-crabapple hybrids with the good eating qualities of the apple parents.",
+            "Icon": {
+                "URL": "",
+                "Height": "",
+                "Width": ""
+            },
+            "FirstURL": "https://duckduckgo.com/Applecrab",
+            "Text": "Applecrab, apple-crabapple hybrids with the good eating qualities of the apple parents."
+        },
+        {
+            "Result": "<a href=\"https://duckduckgo.com/Cooking_apple\">Cooking apple</a> - A cooking apple is an apple that is used primarily for cooking rather than eating raw. Cooking apples are larger, and can be tarter than eating varieties. Some varieties have a firm flesh that does not break down much when cooked.",
+            "Icon": {
+                "URL": "",
+                "Height": "",
+                "Width": ""
+            },
+            "FirstURL": "https://duckduckgo.com/Cooking_apple",
+            "Text": "Cooking apple - A cooking apple is an apple that is used primarily for cooking rather than eating raw. Cooking apples are larger, and can be tarter than eating varieties. Some varieties have a firm flesh that does not break down much when cooked."
+        },
+        {
+            "Result": "<a href=\"https://duckduckgo.com/c/Malus\">Malus</a>",
+            "Icon": {
+                "URL": "",
+                "Height": "",
+                "Width": ""
+            },
+            "FirstURL": "https://duckduckgo.com/c/Malus",
+            "Text": "Malus"
+        },
+        {
+            "Result": "<a href=\"https://duckduckgo.com/c/Apples\">Apples</a>",
+            "Icon": {
+                "URL": "",
+                "Height": "",
+                "Width": ""
+            },
+            "FirstURL": "https://duckduckgo.com/c/Apples",
+            "Text": "Apples"
+        },
+        {
+            "Result": "<a href=\"https://duckduckgo.com/c/Plants_with_sequenced_genomes\">Plants with sequenced genomes</a>",
+            "Icon": {
+                "URL": "",
+                "Height": "",
+                "Width": ""
+            },
+            "FirstURL": "https://duckduckgo.com/c/Plants_with_sequenced_genomes",
+            "Text": "Plants with sequenced genomes"
+        }
+    ],
+    "Entity": "",
+    "meta": {
+        "perl_module": "DDG::Fathead::Wikipedia",
+        "status": "live",
+        "dev_date": null,
+        "js_callback_name": "wikipedia",
+        "signal_from": "wikipedia_fathead",
+        "live_date": null,
+        "src_options": {
+            "skip_end": "0",
+            "skip_abstract": 0,
+            "skip_qr": "",
+            "language": "en",
+            "skip_icon": 0,
+            "skip_image_name": 0,
+            "directory": "",
+            "min_abstract_length": "20",
+            "skip_abstract_paren": 0,
+            "is_wikipedia": 1,
+            "source_skip": "",
+            "is_fanon": 0,
+            "is_mediawiki": 0,
+            "src_info": ""
+        },
+        "repo": "fathead",
+        "src_id": 1,
+        "tab": "About",
+        "developer": null,
+        "producer": null,
+        "dev_milestone": "live",
+        "id": "wikipedia_fathead",
+        "topic": [
+            "productivity"
+        ],
+        "name": "Wikipedia",
+        "attribution": null,
+        "created_date": null,
+        "example_query": "nicola tesla",
+        "is_stackexchange": null,
+        "description": "Wikipedia",
+        "designer": null,
+        "src_domain": "en.wikipedia.org",
+        "src_name": "Wikipedia"
+    },
+    "Type": "A",
+    "Redirect": "",
+    "DefinitionURL": "",
+    "AbstractURL": "https://en.wikipedia.org/wiki/Apple",
+    "Definition": "",
+    "AbstractSource": "Wikipedia",
+    "Infobox": "",
+    "Image": "https://duckduckgo.com/i/b5c79bb9.jpg",
+    "ImageIsLogo": 0,
+    "Abstract": "The apple tree is a deciduous tree in the rose family best known for its sweet, pomaceous fruit, the apple. It is cultivated worldwide as a fruit tree, and is the most widely grown species in the genus Malus. The tree originated in Central Asia, where its wild ancestor, Malus sieversii, is still found today. Apples have been grown for thousands of years in Asia and Europe, and were brought to North America by European colonists. Apples have religious and mythological significance in many cultures, including Norse, Greek and European Christian traditions.",
+    "AbstractText": "The apple tree is a deciduous tree in the rose family best known for its sweet, pomaceous fruit, the apple. It is cultivated worldwide as a fruit tree, and is the most widely grown species in the genus Malus. The tree originated in Central Asia, where its wild ancestor, Malus sieversii, is still found today. Apples have been grown for thousands of years in Asia and Europe, and were brought to North America by European colonists. Apples have religious and mythological significance in many cultures, including Norse, Greek and European Christian traditions.",
+    "AnswerType": "",
+    "ImageHeight": 200,
+    "Answer": "",
+    "Results": []
+}
